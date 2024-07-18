@@ -1,6 +1,5 @@
 package com.example.todoapp.controllers;
 
-import javax.validation.Valid;
 import com.example.todoapp.models.Todo;
 import com.example.todoapp.repositories.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("/api")
@@ -17,16 +18,16 @@ public class TodoController {
     @Autowired
     TodoRepository todoRepository;
 
-    @GetMapping("/todos")
-    public List<Todo> getAllTodos() {
-        Sort sortByCreatedAtDesc = Sort.by(Sort.Direction.DESC, "createdAt");
-        return todoRepository.findAll(sortByCreatedAtDesc);
-    }
+     @GetMapping("/todos")
+     public List<Todo> getAllTodos() {
+         Sort sortByCreatedAtDesc = Sort.by(Sort.Direction.DESC, "createdAt");
+         return todoRepository.findAll(sortByCreatedAtDesc);
+     }
 
     @PostMapping("/todos")
-    public Todo createTodo(@Valid @RequestBody Todo todo) {
-        todo.setCompleted(false);
-        return todoRepository.save(todo);
+     public Todo createTodo( @RequestBody Todo todo) {
+         todo.setCompleted(false);
+         return todoRepository.save(todo);
     }
 
     @GetMapping(value="/todos/{id}")
@@ -38,7 +39,7 @@ public class TodoController {
 
     @PutMapping(value="/todos/{id}")
     public ResponseEntity<Todo> updateTodo(@PathVariable("id") String id,
-                                           @Valid @RequestBody Todo todo) {
+                                            @RequestBody Todo todo) {
         return todoRepository.findById(id)
                 .map(todoData -> {
                     todoData.setTitle(todo.getTitle());
