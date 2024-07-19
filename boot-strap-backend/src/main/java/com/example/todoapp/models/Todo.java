@@ -1,13 +1,11 @@
 package com.example.todoapp.models;
 
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="todos")
-@JsonIgnoreProperties(value = {"createdAt"}, allowGetters = true)
+@Document()
 public class Todo {
     @Id
     private String id;
@@ -16,8 +14,6 @@ public class Todo {
     private String title;
 
     private Boolean completed = false;
-
-    private Date createdAt = new Date();
 
     public Todo() {
         super();
@@ -49,14 +45,6 @@ public class Todo {
 
     public void setCompleted(Boolean completed) {
         this.completed = completed;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     @Override

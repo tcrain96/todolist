@@ -6,33 +6,33 @@ import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class TodoService {
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://localhost:8081';
 
   constructor(private http: HttpClient) { }
 
   getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.baseUrl + '/api/todos/')
+    return this.http.get<Todo[]>(this.baseUrl + '/')
       .pipe(
         catchError(this.handleError)
       );
   }
 
   createTodo(todoData: Todo): Observable<Todo> {
-    return this.http.post<Todo>(this.baseUrl + '/api/todos/', todoData)
+    return this.http.post<Todo>(this.baseUrl + '/api/create/', todoData)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   updateTodo(todoData: Todo): Observable<Todo> {
-    return this.http.put<Todo>(this.baseUrl + '/api/todos/' + todoData.id, todoData)
+    return this.http.put<Todo>(this.baseUrl + '/api/update/' + todoData.id, todoData)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   deleteTodo(id: string): Observable<any> {
-    return this.http.delete(this.baseUrl + '/api/todos/' + id)
+    return this.http.delete(this.baseUrl + '/api/delete/' + id)
       .pipe(
         catchError(this.handleError)
       );

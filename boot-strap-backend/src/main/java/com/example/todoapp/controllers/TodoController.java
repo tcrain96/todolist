@@ -11,33 +11,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@RequestMapping("/api")
-@CrossOrigin("*")
 public class TodoController {
 
     @Autowired
     TodoRepository todoRepository;
 
-     @GetMapping("/todos")
+     @GetMapping("/")
      public List<Todo> getAllTodos() {
          Sort sortByCreatedAtDesc = Sort.by(Sort.Direction.DESC, "createdAt");
          return todoRepository.findAll(sortByCreatedAtDesc);
      }
 
-    @PostMapping("/todos")
+    @PostMapping("/api/create")
      public Todo createTodo( @RequestBody Todo todo) {
          todo.setCompleted(false);
          return todoRepository.save(todo);
     }
 
-    @GetMapping(value="/todos/{id}")
-    public ResponseEntity<Todo> getTodoById(@PathVariable("id") String id) {
-        return todoRepository.findById(id)
-                .map(todo -> ResponseEntity.ok().body(todo))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PutMapping(value="/todos/{id}")
+    @PutMapping(value="api/update/{id}")
     public ResponseEntity<Todo> updateTodo(@PathVariable("id") String id,
                                             @RequestBody Todo todo) {
         return todoRepository.findById(id)
@@ -49,7 +40,7 @@ public class TodoController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping(value="/todos/{id}")
+    @DeleteMapping(value="api/delete/{id}")
     public ResponseEntity<?> deleteTodo(@PathVariable("id") String id) {
         return todoRepository.findById(id)
                 .map(todo -> {
